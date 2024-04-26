@@ -49,7 +49,7 @@ copyMemory(arr1, arr1 + sizeof(arr1), arr2, arr2 + 10);
 Contains utility functions, like wait, safe fopen
 
 Example usage:
-```
+```c
 #include <llib/llib_utils.h> //make sure to update your include path if you use this notation
 
 wait(1000); //wait for 1 second (1000 milliseconds)
