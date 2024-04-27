@@ -37,6 +37,7 @@ void* allocate(size_t size);
 void deallocate(void* ptr);
 void* reallocate(void* ptr, size_t size);
 void copyMemory(const void* srcStart, const void* srcEnd, void* dstStart, void* dstEnd);
+void copyArray(const void* src, void* dst, size_t sizeof_t, size_t size);
 void swap(void* a, void* b, size_t sizeof_t);
 
 /**

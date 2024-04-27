@@ -35,11 +35,13 @@ extern "C" {
 
 size_t strInput(char* string, size_t capacity);
 size_t strLength(const char* string);
-size_t strCopy(const char* srcStr, size_t srcSize, char* dstStr, size_t dstSize);
+size_t strCopy(const char* srcStr, char* dstStr, size_t dstSize);
+size_t strNCopy(const char* srcStr, size_t copyCount, char* dstStr, size_t dstSize);
 int strCompare(const char* string1, const char* string2);
+int strNCompare(const char* string1, const char* string2, size_t cmpCount);
 void strReverse(char* string, size_t length);
 int strFind(const char* string, size_t length, const char* strToFind);
-int strConcat(const char* string1, size_t str1len, const char* string2, size_t str2len, char* dest, size_t destSize);
+size_t strConcat(const char* string1, const char* string2, char* dest, size_t destSize);
 void strCipher(char* string, size_t count);
 void strDecipher(char* string, size_t count);
 

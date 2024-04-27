@@ -32,10 +32,16 @@ typedef unsigned char byte;
 extern "C" {
 #endif // __cplusplus
 
+#define ASCENDING 0
+#define DESCENDING 1
+
 int lSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*));
-int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*));
-void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*));
-int isSorted(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*));
+int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order);
+size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), size_t* occurrences);
+size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order, size_t* occurrences);
+void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*), int order);
+void reverse(void* base, size_t sizeof_t, size_t size);
+int isSorted(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*), int order);
 void shuffle(void* base, size_t sizeof_t, size_t size);
 
 #ifdef __cplusplus

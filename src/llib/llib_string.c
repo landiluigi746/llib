@@ -17,14 +17,13 @@ size_t strInput(char* string, size_t capacity)
 
     int c;
     size_t count = 0;
-    char* stringEnd = string + capacity - 1;
 
-    while((string + count) < stringEnd && (c = getchar()) != EOF && c != '\n')
+    while(count < capacity - 1 && (c = getchar()) != EOF && c != '\n')
         *(string + count++) = (char)c;
 
     *(string + count) = '\0';
 
-    if((string + count) == stringEnd)
+    if(count == capacity - 1)
         clearInBuf();
 
     return count;
@@ -54,23 +53,47 @@ size_t strLength(const char* string)
  * @brief Copies the content of a string into another string
  * 
  * @param srcStr Source string
- * @param srcSize Count of characters to copy
  * @param dstStr Destination string
  * @param dstSize Size of the destination string
  * 
- * @returns Count of characters copied (including terminator)
+ * @returns Count of characters copied
  */
-size_t strCopy(const char* srcStr, size_t srcSize, char* dstStr, size_t dstSize)
+size_t strCopy(const char* srcStr, char* dstStr, size_t dstSize)
+{
+    if(srcStr == NULLPTR || dstStr == NULLPTR)
+        return 0;
+    
+    size_t count = 0;
+
+    while(*(srcStr + count) != '\0' && count < dstSize)
+    {
+        *(dstStr + count) = *(srcStr + count);
+        ++count;
+    }
+
+    *(dstStr + count) = '\0';
+
+    return count;
+}
+
+/**
+ * @brief Copies the n characters of a string into another string
+ * 
+ * @param srcStr Source string
+ * @param copyCount Count of characters to copy
+ * @param dstStr Destination string
+ * @param dstSize Size of the destination string
+ * 
+ * @returns Count of characters copied
+ */
+size_t strNCopy(const char* srcStr, size_t copyCount, char* dstStr, size_t dstSize)
 {
     if(srcStr == NULLPTR || dstStr == NULLPTR)
         return 0;
 
     size_t count = 0;
-    
-    char const* srcEnd = srcStr + srcSize - 1;
-    char const* dstEnd = dstStr + dstSize - 1;
 
-    while(*(srcStr + count) != '\0' && (srcStr + count) < srcEnd && (dstStr + count) < dstEnd)
+    while(*(srcStr + count) != '\0' && count < copyCount && count < dstSize)
     {
         *(dstStr + count) = *(srcStr + count);
         ++count;
@@ -109,18 +132,48 @@ int strCompare(const char* string1, const char* string2)
 }
 
 /**
+ * @brief Compare n characters of two strings alphabetically
+ * 
+ * @param string1 String 1
+ * @param string2 String 2
+ * @param cmpCount Count of characters to compare
+ * 
+ * @returns -1 if string1 < string2, 0 if string1 == string2, 1 if string1 > string2
+ */
+int strNCompare(const char* string1, const char* string2, size_t cmpCount)
+{
+    if(string1 == NULLPTR || string2 == NULLPTR)
+        return 0;
+    
+    size_t count = 0;
+
+    while(count < cmpCount && *string1 != '\0' && *string2 != '\0')
+    {
+        if(*string1 > *string2)
+            return 1;
+        else if(*string1 < *string2)
+            return -1;
+
+        ++string1;
+        ++string2;
+    }
+
+    return 0;
+}
+
+/**
  * @brief Reverses a string of length characters
  * 
  * @param string String to reverse
- * @param length Length of string
+ * @param limit Length of string (how far to reverse)
  */
-void strReverse(char* string, size_t length)
+void strReverse(char* string, size_t limit)
 {
     if(string == NULLPTR)
         return;
 
     char* left = string;
-    char* right = string + length - 1;
+    char* right = string + limit - 1;
 
     while(left < right)
     {
@@ -162,26 +215,23 @@ int strFind(const char* string, size_t length, const char* strToFind)
  * @brief Concatenates two strings (string1 and string2) in dest
  * 
  * @param string1 String 1
- * @param str1len Length of string 1
  * @param string2 String 2
- * @param str2len Length of string 2
  * @param dest Destination string
  * @param destSize Size of destination string
  * 
  * @returns Length of the concatenated string
  */
-int strConcat(const char* string1, size_t str1len, const char* string2, size_t str2len, char* dest, size_t destSize)
+size_t strConcat(const char* string1, const char* string2, char* dest, size_t destSize)
 {
     if(string1 == NULLPTR || string2 == NULLPTR || dest == NULLPTR)
         return 0;
     
     size_t count = 0;
-    char const* destEnd = dest + destSize - 1;
 
-    while((dest + count) < destEnd && *string1 != '\0')
+    while(count < destSize - 1 && *string1 != '\0')
         *(dest + count++) = *string1++;
     
-    while((dest + count) < destEnd && *string2 != '\0')
+    while(count < destSize - 1 && *string2 != '\0')
         *(dest + count++) = *string2++;
     
     *(dest + count) = '\0';

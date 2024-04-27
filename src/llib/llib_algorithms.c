@@ -2,6 +2,9 @@
 
 #define MIN_SORT_RUN 4096
 
+//macro to simplify comparisons based on order
+#define CMP_RESULT(a, b) ((order == ASCENDING) ? compare(a, b) : compare(b, a))
+
 /**
  * @brief Linear search algorithm.
  *
@@ -15,40 +18,41 @@
  */
 int lSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*))
 {
-    int i, offset;
+    size_t i;
     const byte* start = (const byte*)base;
 
     for(i = 0; i < size; i++)
-    {
-        offset = i * sizeof_t;
-
-        if(compare((start + offset), value) == 0)
+        if(compare((start + i * sizeof_t), value) == 0)
             return i;
-    }
 
     return NOT_FOUND;
 }
 
 /**
  * @brief Binary search algorithm.
+ * If order is neither ASCENDING nor DESCENDING, ASCENDING is assumed.
  *
  * @param base Pointer to the base address of the sorted array.
  * @param sizeof_t Size of each element in the array.
  * @param size Number of elements in the array.
  * @param value Pointer to the value to be searched.
+ * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
  * @param compare Pointer to the comparison function.
  *
  * @return Index of the element if found, or -1 if not found.
  */
-int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*))
+int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order)
 {
     int left = 0, right = size - 1, mid, compareResult;
     const byte* start = (const byte*)base;
 
+    if(order != ASCENDING && order != DESCENDING)
+        order = ASCENDING;
+
     while(left <= right)
     {
         mid = (left + right) >> 1;
-        compareResult = compare((start + mid * sizeof_t), value);
+        compareResult = CMP_RESULT((start + mid * sizeof_t), value);
 
         if(compareResult == 0)
             return mid;
@@ -62,61 +66,73 @@ int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, i
 }
 
 /**
- * @brief Sorts the array in the range [left..right] using a simple variant of Shell Sort algorithm.
- * Used by sort()
+ * @brief Linear search for occurrences of a value in an array.
  * 
  * @param base Pointer to the base address of the array.
  * @param sizeof_t Size of each element in the array.
- * @param left Index of the first element in the range.
- * @param right Index of the last element in the range.
+ * @param size Number of elements in the array.
+ * @param value Pointer to the value to be searched.
  * @param compare Pointer to the comparison function.
+ * @param occurrences Pointer to the array where the occurrences will be stored.
+ * 
+ * @returns Number of occurrences of the value if found, or 0 if not found.
  */
-static void shellSort(void* base, size_t sizeof_t, size_t left, size_t right, int (*compare)(const void*, const void*))
+size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), size_t* occurrences)
 {
-    size_t i, j, gap = 1, offset1, offset2;
-    size_t size = right - left;
+    size_t i, count = 0;
+    const byte* start = (const byte*) base;
 
-    byte* start = (byte*)base;
-    byte* temp_ptr = (byte*) allocate(sizeof_t);
+    for(i = 0; i < size; i++)
+        if(compare(start + i * sizeof_t, value) == 0)
+            *(occurrences + count++) = i;
 
-    //determine the gap
-    while(gap < size / 3)
-        gap = gap * 3 + 1;
+    return count;
+}
 
-    //sort the array
-    while(gap > 0)
+/**
+ * @brief Binary search for occurrences of a value in an array.
+ * If order is neither ASCENDING nor DESCENDING, ASCENDING is assumed.
+ * 
+ * @param base Pointer to the base address of the array.
+ * @param sizeof_t Size of each element in the array.
+ * @param size Number of elements in the array.
+ * @param value Pointer to the value to be searched.
+ * @param compare Pointer to the comparison function.
+ * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
+ * @param occurrences Pointer to the array where the occurrences will be stored.
+ * 
+ * @returns Number of occurrences of the value if found, or 0 if not found.
+ */
+size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order, size_t* occurrences)
+{
+    int index;
+    int left, right, count = 0;
+    const byte* start = (const byte*) base;
+
+    index = bSearch(base, sizeof_t, size, value, compare, order);
+
+    printf("index: %d\n", index);
+
+    if(index != NOT_FOUND)
     {
-        for(i = gap; i < size; i++)
-        {
-            j = (left + i) * sizeof_t;
-            ASSIGN(temp_ptr, (start + j), sizeof_t); //copy the value at j into a temp variable
-            //copyMemory(start + j, start + j + sizeof_t, temp_ptr, temp_ptr + sizeof_t);
-            offset1 = (left + gap) * sizeof_t;
-            offset2 = gap * sizeof_t;
+        *(occurrences + count++) = index;
 
-            //shift the elements
-            while(j >= offset1 && compare((start + j - offset2), temp_ptr) > 0)
-            {
-                ASSIGN((start + j), (start + j - offset2), sizeof_t);
-                //copyMemory((start + j - offset2), (start + j - offset2 + sizeof_t), (start + j), (start + j - offset2));
-                j -= offset2;
-            }
+        left = index - 1;
+        right = index + 1;
 
-            ASSIGN((start + j), temp_ptr, sizeof_t); //put the value in the right place
-            //copyMemory(temp_ptr, temp_ptr + sizeof_t, (start + j), (start + j + sizeof_t));
-        }
-
-        gap /= 3;
+        while(left >= 0 && CMP_RESULT(start + left * sizeof_t, value) == 0)
+            *(occurrences + count++) = left--;
+        
+        while(right < size && CMP_RESULT(start + right * sizeof_t, value) == 0)
+            *(occurrences + count++) = right++;
     }
 
-    deallocate(temp_ptr);
-
-    return;
+    return count;
 }
 
 /**
  * @brief Merges two sorted arrays into one sorted array.
- * Used by sort() in the merge part
+ * Used by sort()
  * 
  * @param base Pointer to the base address of the array.
  * @param sizeof_t Size of each element in the array.
@@ -124,8 +140,9 @@ static void shellSort(void* base, size_t sizeof_t, size_t left, size_t right, in
  * @param mid Index of the mid element in the left array.
  * @param right Index of the last element in the right array.
  * @param compare Pointer to the comparison function.
+ * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
  */
-static void merge(void* base, size_t sizeof_t, size_t left, size_t mid, size_t right, int (*compare)(const void*, const void*))
+static void merge(void* base, size_t sizeof_t, size_t left, size_t mid, size_t right, int (*compare)(const void*, const void*), int order)
 {
     size_t size1 = mid - left + 1;
     size_t size2 = right - mid;
@@ -142,8 +159,8 @@ static void merge(void* base, size_t sizeof_t, size_t left, size_t mid, size_t r
     byte* leftPart = (byte*) allocate(size1 * sizeof_t);
     byte* rightPart = (byte*) allocate(size2 * sizeof_t);
 
-    ASSIGN(leftPart, leftBegin, size1 * sizeof_t); //copy the left halve into leftPart
-    ASSIGN(rightPart, rightBegin, size2 * sizeof_t); //copy the right halve into rightPart
+    copyArray(leftBegin, leftPart, sizeof_t, size1); //copy the left halve into leftPart
+    copyArray(rightBegin, rightPart, sizeof_t, size2); //copy the right halve into rightPart
 
     size_t i = left, j = 0, k = 0;
 
@@ -154,7 +171,7 @@ static void merge(void* base, size_t sizeof_t, size_t left, size_t mid, size_t r
         offsetJ = j * sizeof_t;
         offsetK = k * sizeof_t;
         //if(leftPart[j] <= rightPart[k])
-        if(compare(leftPart + offsetJ, rightPart + offsetK) <= 0)
+        if(CMP_RESULT(leftPart + offsetJ, rightPart + offsetK) <= 0)
         {
             ASSIGN((start + offsetI), (leftPart + offsetJ), sizeof_t); //start[i] = leftPart[j];
             ++j;
@@ -191,26 +208,26 @@ static void merge(void* base, size_t sizeof_t, size_t left, size_t mid, size_t r
 }
 
 /**
- * @brief Sorts an array using a simple variant of Tim Sort algorithm.
- *
+ * @brief Sorts an array using Merge Sort algorithm.
+ * If order is neither ASCENDING nor DESCENDING, ASCENDING is assumed.
+ * 
  * @param base Pointer to the base address of the array.
  * @param sizeof_t Size of each element in the array.
  * @param size Number of elements in the array.
  * @param compare Pointer to the comparison function.
+ * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
  */
-void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*))
+void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*), int order)
 {
+    if(size < 2)
+        return;
+
+    if(order != ASCENDING && order != DESCENDING)
+        order = ASCENDING;
+
     size_t left, mid, right, subSize;
 
-    const size_t runSize = min(MIN_SORT_RUN, size >> 2);
-
-    for(left = 0; left < size; left += runSize)
-    {
-        right = min(left + runSize, size);
-        shellSort(base, sizeof_t, left, right, compare);
-    }
-
-    for(subSize = runSize; subSize < size; subSize *= 2)
+    for(subSize = 1; subSize < size; subSize *= 2)
     {
         for(left = 0; left < size; left += subSize * 2)
         {
@@ -218,8 +235,32 @@ void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, 
             right = min(left + subSize * 2 - 1, size - 1);
 
             if(mid < right)
-                merge(base, sizeof_t, left, mid, right, compare);
+                merge(base, sizeof_t, left, mid, right, compare, order);
         }
+    }
+
+
+    return;
+}
+
+/**
+ * @brief Reverses an array.
+ * 
+ * @param base Pointer to the base address of the array.
+ * @param sizeof_t Size of each element in the array.
+ * @param size Number of elements in the array.
+ */
+void reverse(void* base, size_t sizeof_t, size_t size)
+{
+    byte* start = (byte*) base;
+    size_t left = 0, right = size - 1;
+
+    while(left < right)
+    {
+        swap(start + left * sizeof_t, start + right * sizeof_t, sizeof_t);
+
+        ++left;
+        --right;
     }
 
     return;
@@ -232,19 +273,23 @@ void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, 
  * @param sizeof_t Size of each element in the array.
  * @param size Number of elements in the array.
  * @param compare Pointer to the comparison function.
+ * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
  *
  * @returns 1 if the array is sorted, 0 otherwise.
  */
-int isSorted(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*))
+int isSorted(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*), int order)
 {
-    int i, offset;
+    size_t i, offset;
     const byte* start = (const byte*)base;
+
+    if(order != ASCENDING && order != DESCENDING)
+        order = ASCENDING;
 
     for(i = 0; i < size - 1; i++)
     {
         offset = i * sizeof_t;
 
-        if(compare((start + offset), (start + offset + sizeof_t)) > 0)
+        if(CMP_RESULT((start + offset), (start + offset + sizeof_t)) > 0)
             return 0;
     }
 
@@ -262,18 +307,13 @@ int isSorted(const void* base, size_t sizeof_t, size_t size, int (*compare)(cons
  */
 void shuffle(void* base, size_t sizeof_t, size_t size)
 {
-    int i, randIdx, offset1, offset2;
+    size_t i, randIdx;
     byte* start = (byte*)base;
 
     for(i = 0; i < size; i++)
     {
         randIdx = rand() % (i + 1);
-
-        offset1 = i * sizeof_t;
-        offset2 = randIdx * sizeof_t;
-
-
-        swap((start + offset1), (start + offset2), sizeof_t);
+        swap((start + i * sizeof_t), (start + randIdx * sizeof_t), sizeof_t);
     }
 
     return;
