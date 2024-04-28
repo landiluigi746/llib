@@ -37,8 +37,8 @@ extern "C" {
 
 int lSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*));
 int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order);
-size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), size_t* occurrences);
-size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order, size_t* occurrences);
+size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), size_t* occurrences, size_t occurrencesSize);
+size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order, size_t* occurrences, size_t occurrencesSize);
 void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*), int order);
 void reverse(void* base, size_t sizeof_t, size_t size);
 int isSorted(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*), int order);

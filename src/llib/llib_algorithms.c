@@ -80,20 +80,24 @@ int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, i
  * @param value Pointer to the value to be searched.
  * @param compare Pointer to the comparison function.
  * @param occurrences Pointer to the array where the occurrences will be stored.
+ * @param occurrencesSize Size of the occurrences array.
  * 
  * @returns Number of occurrences of the value if found, or 0 if not found.
  */
-size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), size_t* occurrences)
+size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), size_t* occurrences, size_t occurrencesSize)
 {
     size_t i, count = 0;
     const byte* start = (const byte*) base;
+
+    if(occurrencesSize == 0)
+        return 0;
 
     /*  
         simply loop through the array and check if the value is found.
         if found, add the index to the occurrences array
     */
     for(i = 0; i < size; i++)
-        if(compare(start + i * sizeof_t, value) == 0)
+        if(compare(start + i * sizeof_t, value) == 0 && count < occurrencesSize)
             *(occurrences + count++) = i;
 
     return count;
@@ -110,18 +114,20 @@ size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const 
  * @param compare Pointer to the comparison function.
  * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
  * @param occurrences Pointer to the array where the occurrences will be stored.
+ * @param occurrencesSize Size of the occurrences array.
  * 
  * @returns Number of occurrences of the value if found, or 0 if not found.
  */
-size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order, size_t* occurrences)
+size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order, size_t* occurrences, size_t occurrencesSize)
 {
     int index;
     int left, right, count = 0;
     const byte* start = (const byte*) base;
 
-    index = bSearch(base, sizeof_t, size, value, compare, order);
+    if(occurrencesSize == 0)
+        return 0;
 
-    printf("index: %d\n", index);
+    index = bSearch(base, sizeof_t, size, value, compare, order);
 
     if(index != NOT_FOUND)
     {
@@ -137,10 +143,10 @@ size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const 
         left = index - 1;
         right = index + 1;
 
-        while(left >= 0 && CMP_RESULT(start + left * sizeof_t, value) == 0)
+        while(left >= 0 && CMP_RESULT(start + left * sizeof_t, value) == 0 && count < occurrencesSize)
             *(occurrences + count++) = left--;
         
-        while(right < size && CMP_RESULT(start + right * sizeof_t, value) == 0)
+        while(right < size && CMP_RESULT(start + right * sizeof_t, value) == 0 && count < occurrencesSize)
             *(occurrences + count++) = right++;
     }
 

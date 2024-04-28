@@ -73,7 +73,7 @@ size_t strCopy(const char* srcStr, char* dstStr, size_t dstSize)
     
     size_t count = 0;
 
-    while(*(srcStr + count) != '\0' && count < dstSize)
+    while(*(srcStr + count) != '\0' && count < dstSize - 1)
     {
         *(dstStr + count) = *(srcStr + count);
         ++count;
@@ -293,8 +293,11 @@ void strCipher(char* string, size_t count)
     if(string == NULLPTR)
         return;
 
-    if(count > '~' - '!')
-        count = 1;
+    //avoid useless operations if there is nothing to encrypt
+    if(count == 0 || count % ('~' - '!' + 1) == 0)
+        return;
+
+    count = count % ('~' - '!' + 1);
 
     while(*string != '\0')
     {
@@ -324,8 +327,11 @@ void strDecipher(char* string, size_t count)
     if(string == NULLPTR)
         return;
 
-    if(count > '~' - '!')
-        count = 1;
+    //avoid useless operations if there is nothing to decrypt
+    if(count == 0 || count % ('~' - '!' + 1) == 0)
+        return;
+    
+    count = count % ('~' - '!' + 1);
 
     while(*string != '\0')
     {
