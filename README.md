@@ -48,10 +48,8 @@ swap(&a, &b, sizeof(int));
 
 //copy memory
 int arr1[] = {1, 2, 3, 4};
-size_t size1 = sizeof(arr1) / sizeof(arr1[0]);
 int arr2[10];
-size_t size2 = 10;
-copyMemory(arr1, arr1 + size1, arr2, arr2 + size2);
+copyMemory(arr1, arr2, sizeof(arr1), sizeof(arr2));
 
 //copy array (when arrays are the same size)
 int arr3[] = {1, 2, 3, 4, 5, 6};
@@ -125,7 +123,8 @@ char c;
 scanf("%d", &y);
 clearInBuf(); //clear the input buffer
 
-scanf("%c", &c);
+//now we can use "%c" instead of " %c" beacuse the '\n' character is automatically cleared
+scanf("%c", &c); 
 ```
 
 ### algorithms

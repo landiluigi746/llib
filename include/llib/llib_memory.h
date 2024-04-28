@@ -37,20 +37,20 @@ void* allocate(size_t size);
 void deallocate(void* ptr);
 void* reallocate(void* ptr, size_t size);
 void setMemory(void* ptr, size_t size, uint8_t value);
-void copyMemory(const void* srcStart, const void* srcEnd, void* dstStart, void* dstEnd);
+void copyMemory(const void* src, void* dst, size_t srcSize, size_t dstSize);
 void copyArray(const void* src, void* dst, size_t sizeof_t, size_t size);
 void* allocateInit(size_t size, uint8_t value);
 void swap(void* a, void* b, size_t sizeof_t);
 
 /**
  * @brief Macro that simulates dst = src.
- * Intended to use instead of a copyMemory(src, src + size, dst, dst + size)
+ * Intended to use instead of a copyMemory(src, dst, size, size)
  * 
  * @param dst Destination pointer
  * @param src Source pointer
  * @param size Number of bytes
  */
-#define ASSIGN(dst, src, size) copyMemory(src, src + size, dst, dst + size)
+#define ASSIGN(dst, src, size) copyMemory(src, dst, size, size)
 
 #ifdef __cplusplus
 }

@@ -94,20 +94,20 @@ void setMemory(void* ptr, size_t size, uint8_t value)
  * @brief Copies the content of the segment srcStart-srcEnd in the segment
  * dstStart-dstEnd.
  * 
- * @param srcStart Start of the source segment
- * @param srcEnd End of the source segment
- * @param dstStart Start of the destination segment
- * @param dstEnd End of the destination segment
+ * @param src Source segment
+ * @param dst Destination segment
+ * @param srcSize Size of the source segment
+ * @param dstSize Size of the destination segment
  */
-void copyMemory(const void* srcStart, const void* srcEnd, void* dstStart, void* dstEnd)
+void copyMemory(const void* src, void* dst, size_t srcSize, size_t dstSize)
 {
-    if(srcStart == NULLPTR || srcEnd == NULLPTR || dstStart == NULLPTR || dstEnd == NULLPTR)
+    if(src == NULLPTR || dst == NULLPTR || src == dst || srcSize == 0 || dstSize == 0)
         return;
 
-    const byte* s = (const byte*)srcStart;
-    byte* d = (byte*)dstStart;
+    const byte* s = (const byte*) src;
+    byte* d = (byte*) dst;
 
-    while(s != srcEnd && d != dstEnd)
+    while(srcSize-- > 0 && dstSize-- > 0 && s != d)
         *d++ = *s++;
 
     return;
@@ -115,11 +115,6 @@ void copyMemory(const void* srcStart, const void* srcEnd, void* dstStart, void* 
 
 /**
  * @brief Copies the content of the array src to the array dst.
- * It's prefferable to use this instead of copyMemory(), especially 
- * with large arrays, beacuse copyMemory runs everithing in a single loop 
- * and this can lead to a lot of overhead or even the program to crash. 
- * This function instead calls copyMemory() on each element of the array, 
- * dividing the work.
  * 
  * @param src Source array
  * @param dst Destination array
