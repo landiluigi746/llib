@@ -1,6 +1,12 @@
-#include <llib/llib_algorithms.h>
+/**
+ * Implementation file for llib algorithms
+ * 
+ * Author: landiluigi746
+ * Date: 2024-04-24
+ * Github: https://github.com/landiluigi746
+ */
 
-#define MIN_SORT_RUN 4096
+#include <llib/llib_algorithms.h>
 
 //macro to simplify comparisons based on order
 #define CMP_RESULT(a, b) ((order == ASCENDING) ? compare(a, b) : compare(b, a))
@@ -82,6 +88,10 @@ size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const 
     size_t i, count = 0;
     const byte* start = (const byte*) base;
 
+    /*  
+        simply loop through the array and check if the value is found.
+        if found, add the index to the occurrences array
+    */
     for(i = 0; i < size; i++)
         if(compare(start + i * sizeof_t, value) == 0)
             *(occurrences + count++) = i;
@@ -115,6 +125,13 @@ size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const 
 
     if(index != NOT_FOUND)
     {
+        /*  
+            if bSearch found the value, add the index to the occurrences array,
+            and then, since we know that the array is sorted (so if there are any other
+            occurrences of the value they are immediately to the left or right),
+            we continue searching from there, starting from the left and the right of the found index.
+        */
+
         *(occurrences + count++) = index;
 
         left = index - 1;
@@ -132,7 +149,7 @@ size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const 
 
 /**
  * @brief Merges two sorted arrays into one sorted array.
- * Used by sort()
+ * Used by sort() in the merge part
  * 
  * @param base Pointer to the base address of the array.
  * @param sizeof_t Size of each element in the array.
@@ -227,6 +244,7 @@ void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, 
 
     size_t left, mid, right, subSize;
 
+    //bottom up merge sort to avoid recursive calls
     for(subSize = 1; subSize < size; subSize *= 2)
     {
         for(left = 0; left < size; left += subSize * 2)
@@ -268,6 +286,7 @@ void reverse(void* base, size_t sizeof_t, size_t size)
 
 /**
  * @brief Checks if an array is sorted.
+ * If order is neither ASCENDING nor DESCENDING, ASCENDING is assumed.
  *
  * @param base Pointer to the base address of the array.
  * @param sizeof_t Size of each element in the array.

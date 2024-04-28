@@ -36,8 +36,10 @@ void checkNullPtr(const void* ptr);
 void* allocate(size_t size);
 void deallocate(void* ptr);
 void* reallocate(void* ptr, size_t size);
+void setMemory(void* ptr, size_t size, uint8_t value);
 void copyMemory(const void* srcStart, const void* srcEnd, void* dstStart, void* dstEnd);
 void copyArray(const void* src, void* dst, size_t sizeof_t, size_t size);
+void* allocateInit(size_t size, uint8_t value);
 void swap(void* a, void* b, size_t sizeof_t);
 
 /**

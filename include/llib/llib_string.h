@@ -12,8 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include "llib_io.h"
-#include "llib_memory.h"
+#include <llib/llib_io.h>
+#include <llib/llib_memory.h>
 
 /**
  * llib defines
@@ -39,6 +39,7 @@ size_t strCopy(const char* srcStr, char* dstStr, size_t dstSize);
 size_t strNCopy(const char* srcStr, size_t copyCount, char* dstStr, size_t dstSize);
 int strCompare(const char* string1, const char* string2);
 int strNCompare(const char* string1, const char* string2, size_t cmpCount);
+char* strDuplicate(const char* string);
 void strReverse(char* string, size_t length);
 int strFind(const char* string, size_t length, const char* strToFind);
 size_t strConcat(const char* string1, const char* string2, char* dest, size_t destSize);

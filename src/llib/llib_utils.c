@@ -1,3 +1,11 @@
+/**
+ * Implementation file for llib algorithms
+ * 
+ * Author: landiluigi746
+ * Date: 2024-04-24
+ * Github: https://github.com/landiluigi746
+ */
+
 #include <llib/llib_utils.h>
 
 /**

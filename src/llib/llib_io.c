@@ -1,8 +1,16 @@
+/**
+ * Implementation file for llib i/o
+ * 
+ * Author: landiluigi746
+ * Date: 2024-04-24
+ * Github: https://github.com/landiluigi746
+ */
+
 #include <llib/llib_io.h>
 
 /**
- * @brief Clears the standard input buffer by discarding
- * every character until a '\n' or EOF is detected
+ * @brief Clears stdin by discarding every 
+ * character until a '\n' or EOF is detected
  */
 void clearInBuf(void)
 {
@@ -12,7 +20,8 @@ void clearInBuf(void)
 }
 
 /**
- * @brief Reads input from standard input based on the specified format and stores it at the provided address.
+ * @brief Reads input from stdin based on the specified format and stores it at the provided address.
+ * Automatically clears the buffer at the end.
  *
  * @param format The format string for reading input.
  * @param address Pointer to the memory location where the input will be stored.

@@ -1,9 +1,17 @@
+/**
+ * Implementation file for llib algorithms
+ * 
+ * Author: landiluigi746
+ * Date: 2024-04-24
+ * Github: https://github.com/landiluigi746
+ */
+
 #include <llib/llib_string.h>
 
 /**
  * @brief Takes a string in input and stores every char
  * in string until it's full or the string ends.
- * Automatically clears the input buffer.
+ * Automatically clears the input buffer at the end if needed.
  * 
  * @param string String where the input is stored
  * @param capacity Capacity of the string
@@ -114,19 +122,25 @@ size_t strNCopy(const char* srcStr, size_t copyCount, char* dstStr, size_t dstSi
  */
 int strCompare(const char* string1, const char* string2)
 {
-    if(string1 == NULLPTR || string2 == NULLPTR)
+    if(string1 != NULLPTR && string2 == NULLPTR)
+        return 1;
+
+    if(string1 == NULLPTR && string2 != NULLPTR)
+        return -1;
+
+    if((string1 == NULLPTR && string2 == NULLPTR) || string1 == string2)
         return 0;
 
-    while(*string1 != '\0' && *string2 != '\0')
+    while(*string1 == *string2)
     {
-        if(*string1 > *string2)
-            return 1;
-        else if(*string1 < *string2)
-            return -1;
+        if(*string1 == '\0' || *string2 == '\0')
+            return 0;
 
         ++string1;
         ++string2;
     }
+
+    return ((*string1 - *string2) > 0) ? 1 : -1;
 
     return 0;
 }
@@ -142,23 +156,52 @@ int strCompare(const char* string1, const char* string2)
  */
 int strNCompare(const char* string1, const char* string2, size_t cmpCount)
 {
-    if(string1 == NULLPTR || string2 == NULLPTR)
+    if(string1 != NULLPTR && string2 == NULLPTR)
+        return 1;
+
+    if(string1 == NULLPTR && string2 != NULLPTR)
+        return -1;
+
+    if((string1 == NULLPTR && string2 == NULLPTR) || string1 == string2 || cmpCount == 0)
         return 0;
     
     size_t count = 0;
 
-    while(count < cmpCount && *string1 != '\0' && *string2 != '\0')
+    while(count < cmpCount && *string1 == *string2)
     {
-        if(*string1 > *string2)
-            return 1;
-        else if(*string1 < *string2)
-            return -1;
+        if(*string1 == '\0' || *string2 == '\0')
+            return 0;
 
         ++string1;
         ++string2;
     }
 
-    return 0;
+    return ((*string1 - *string2) > 0) ? 1 : -1;
+}
+
+/**
+ * @brief Duplicates a string
+ * 
+ * @param string String to duplicate
+ * 
+ * @returns Pointer to the duplicated string
+ */
+char* strDuplicate(const char* string)
+{
+    checkNullPtr(string);
+
+    size_t count = 0, len = strLength(string);
+    char* duplicate = (char*) allocate(len + 1);
+
+    while(*string != '\0')
+    {
+        *(duplicate + count) = *(string + count);
+        ++count;
+    }
+
+    *(duplicate + count) = '\0';
+
+    return duplicate;
 }
 
 /**

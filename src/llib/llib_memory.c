@@ -1,8 +1,16 @@
+/**
+ * Implementation file for llib memory
+ * 
+ * Author: landiluigi746
+ * Date: 2024-04-24
+ * Github: https://github.com/landiluigi746
+ */
+
 #include <llib/llib_memory.h>
 
 /**
  * @brief Checks if the given pointer is null
- * If yes, exits the program.
+ * If yes, exits the program with an error message.
  * Intended to use when a null pointer is fatal.
  * 
  * @param ptr The pointer to check
@@ -11,7 +19,7 @@ void checkNullPtr(const void* ptr)
 {
     if(ptr == NULLPTR)
     {
-        printf("Error! Null pointer detected!\n");
+        printf("Error! Null pointer caught by checkNullPtr()!\n");
         exit(EXIT_FAILURE);
     }
 
@@ -60,6 +68,26 @@ void* reallocate(void* ptr, size_t size)
     void* newPtr = realloc(ptr, size);
     checkNullPtr(newPtr);
     return newPtr;
+}
+
+/**
+ * @brief Sets the content of the memory pointed by ptr to value
+ * 
+ * @param ptr Pointer to the memory
+ * @param size Size of the memory
+ * @param value Value to set
+ */
+void setMemory(void* ptr, size_t size, uint8_t value)
+{
+    if(ptr == NULLPTR)
+        return;
+
+    byte* start = (byte*) ptr;
+
+    while(size--)
+        *start++ = value;
+    
+    return;
 }
 
 /**
@@ -114,6 +142,25 @@ void copyArray(const void* src, void* dst, size_t sizeof_t, size_t size)
     }
 
     return;
+}
+
+/**
+ * @brief Allocates size bytes, initializes it with value and returns a pointer to it
+ * 
+ * @param size Number of bytes to allocate
+ * @param value Value to initialize
+ * 
+ * @returns Pointer to the allocated memory
+ */
+void* allocateInit(size_t size, uint8_t value)
+{
+    void* ptr = allocate(size);
+    byte* start = (byte*) ptr;
+
+    while(size--)
+        *start++ = value;
+
+    return ptr;
 }
 
 /**
