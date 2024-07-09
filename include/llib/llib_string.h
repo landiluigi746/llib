@@ -44,7 +44,7 @@ extern "C" {
  * 
  * It is meant to be used as a simple wrapper around a char*
  */
-typedef struct string_s
+typedef struct
 {
     char* buf;
     size_t len;
