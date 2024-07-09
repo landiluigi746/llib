@@ -2,7 +2,7 @@
  * Header file for llib string-related stuff
  * 
  * Author: landiluigi746
- * Date: 2024-04-24
+ * Date: 2024-07-09
  * Github: https://github.com/landiluigi746
  */
 
@@ -33,18 +33,168 @@ typedef unsigned char byte;
 extern "C" {
 #endif // __cplusplus
 
-size_t strInput(char* string, size_t capacity);
-size_t strLength(const char* string);
-size_t strCopy(const char* srcStr, char* dstStr, size_t dstSize);
-size_t strNCopy(const char* srcStr, size_t copyCount, char* dstStr, size_t dstSize);
-int strCompare(const char* string1, const char* string2);
-int strNCompare(const char* string1, const char* string2, size_t cmpCount);
-char* strDuplicate(const char* string);
-void strReverse(char* string, size_t length);
-int strFind(const char* string, size_t length, const char* strToFind);
-size_t strConcat(const char* string1, const char* string2, char* dest, size_t destSize);
-void strCipher(char* string, size_t count);
-void strDecipher(char* string, size_t count);
+/**
+ * Struct for a string
+ * 
+ * Not meant to be used directly, use the related functions
+ * 
+ * Do not confuse this with a C-clone of std::string
+ * In fact, std::string typically resizes its internal buffer when needed,
+ * but this string struct does not do that.
+ * 
+ * It is meant to be used as a simple wrapper around a char*
+ */
+typedef struct string_s
+{
+    char* buf;
+    size_t len;
+    size_t capacity;
+} string;
+
+/* Utility functions */
+size_t ll_strlen(const char* str);
+char* ll_strdup(const char* src);
+int ll_strcmp(const char* str1, const char* str2);
+int ll_strncmp(const char* str1, const char* str2, size_t cmpCount);
+
+/**
+ * @brief Create a new string from a char array
+ * 
+ * @param src The char array
+ * 
+ * @returns Pointer to the new string
+ */
+string* strCreateFrom(const char* src);
+
+/**
+ * @brief Create a new string
+ * 
+ * @param capacity The capacity of the string
+ * 
+ * @returns Pointer to the new string
+ */
+string* strCreate(size_t capacity);
+
+/**
+ * @brief Duplicate a string
+ * 
+ * @param src The string to duplicate
+ * 
+ * @returns Pointer to the new string
+ */
+string* strDuplicate(const string* src);
+
+/**
+ * @brief Resize a string
+ * 
+ * @param str The string to resize
+ * @param newCapacity The new capacity of the string
+ */
+void strResize(string* str, size_t newCapacity);
+
+/**
+ * @brief Delete a string
+ * 
+ * @param str The string to delete
+ */
+void strDelete(string* str);
+
+/**
+ * @brief Get input from the user
+ * 
+ * @param str The string to store the input in
+ * 
+ * @returns The length of the input
+ * 
+ * Make sure to have a buffer where the input will be stored
+ */
+size_t strInput(string* str);
+
+/**
+ * @brief Copy a string
+ * 
+ * @param src The string (char array) to copy
+ * @param dst The destination (struct string) string
+ * 
+ * @returns The length of the copied string
+ */
+size_t strCopy(const char* src, string* dst);
+
+/**
+ * @brief Copy a string
+ * 
+ * @param src The string (char array) to copy
+ * @param dst The destination (struct string) string
+ * @param copyCount The number of characters to copy
+ * 
+ * @returns The length of the copied string
+ */
+size_t strNCopy(const char* src, size_t copyCount, string* dst);
+
+/**
+ * @brief Compare two strings
+ * 
+ * @param str1 The first string
+ * @param str2 The second string
+ * 
+ * @returns -1 if str1 < str2, 0 if str1 == str2, 1 if str1 > str2
+ */
+int strCompare(const string* str1, const string* str2);
+
+/**
+ * @brief Compare two strings
+ * 
+ * @param str1 The first string
+ * @param str2 The second string
+ * @param cmpCount The number of characters to compare
+ * 
+ * @returns -1 if str1 < str2, 0 if str1 == str2, 1 if str1 > str2
+ */
+int strNCompare(const string* str1, const string* str2, size_t cmpCount);
+
+/**
+ * @brief Reverse a string
+ * 
+ * @param str The string to reverse
+ * @param limit The number of characters to reverse
+ */
+void strReverse(string* str, size_t limit);
+
+/**
+ * @brief Find a substring in a string
+ * 
+ * @param str The string to search
+ * @param strToFind The substring to search for
+ * 
+ * @returns The index of the first occurrence of strToFind in str or NOT_FOUND if not found
+ */
+int strFind(const string* str, const char* strToFind);
+
+/**
+ * @brief Concatenate two strings
+ * 
+ * @param str1 The first string (struct string), will be modified
+ * @param str2 The second string (char array), will be appended to str1
+ *
+ * @returns The length of the concatenated string
+ */
+size_t strConcat(string* str1, const char* str2);
+
+/**
+ * @brief Encrypt a string
+ * 
+ * @param str The string to encrypt
+ * @param count The number of characters to encrypt
+ */
+void strCipher(string* str, size_t count);
+
+/**
+ * @brief Decrypt a string
+ * 
+ * @param str The string to decrypt
+ * @param count The number of characters to decrypt
+ */
+void strDecipher(string* str, size_t count);
 
 #ifdef __cplusplus
 }

@@ -11,19 +11,11 @@
 //macro to simplify comparisons based on order
 #define CMP_RESULT(a, b) ((order == ASCENDING) ? compare(a, b) : compare(b, a))
 
-/**
- * @brief Linear search algorithm.
- *
- * @param base Pointer to the base address of the array.
- * @param sizeof_t Size of each element in the array.
- * @param size Number of elements in the array.
- * @param value Pointer to the value to be searched.
- * @param compare Pointer to the comparison function.
- *
- * @returns Index of the element if found, or -1 if not found.
- */
 int lSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*))
 {
+    if(base == NULLPTR || compare == NULLPTR || value == NULLPTR || sizeof_t == 0)
+        return NOT_FOUND;
+
     size_t i;
     const byte* start = (const byte*)base;
 
@@ -34,21 +26,11 @@ int lSearch(const void* base, size_t sizeof_t, size_t size, const void* value, i
     return NOT_FOUND;
 }
 
-/**
- * @brief Binary search algorithm.
- * If order is neither ASCENDING nor DESCENDING, ASCENDING is assumed.
- *
- * @param base Pointer to the base address of the sorted array.
- * @param sizeof_t Size of each element in the array.
- * @param size Number of elements in the array.
- * @param value Pointer to the value to be searched.
- * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
- * @param compare Pointer to the comparison function.
- *
- * @return Index of the element if found, or -1 if not found.
- */
 int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order)
 {
+    if(base == NULLPTR || compare == NULLPTR || value == NULLPTR || sizeof_t == 0)
+        return NOT_FOUND;
+
     int left = 0, right = size - 1, mid, compareResult;
     const byte* start = (const byte*)base;
 
@@ -71,21 +53,11 @@ int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, i
     return NOT_FOUND;
 }
 
-/**
- * @brief Linear search for occurrences of a value in an array.
- * 
- * @param base Pointer to the base address of the array.
- * @param sizeof_t Size of each element in the array.
- * @param size Number of elements in the array.
- * @param value Pointer to the value to be searched.
- * @param compare Pointer to the comparison function.
- * @param occurrences Pointer to the array where the occurrences will be stored.
- * @param occurrencesSize Size of the occurrences array.
- * 
- * @returns Number of occurrences of the value if found, or 0 if not found.
- */
 size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), size_t* occurrences, size_t occurrencesSize)
 {
+    if(base == NULLPTR || compare == NULLPTR || value == NULLPTR || sizeof_t == 0 || occurrences == NULLPTR)
+        return NOT_FOUND;
+
     size_t i, count = 0;
     const byte* start = (const byte*) base;
 
@@ -103,23 +75,14 @@ size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const 
     return count;
 }
 
-/**
- * @brief Binary search for occurrences of a value in an array.
- * If order is neither ASCENDING nor DESCENDING, ASCENDING is assumed.
- * 
- * @param base Pointer to the base address of the array.
- * @param sizeof_t Size of each element in the array.
- * @param size Number of elements in the array.
- * @param value Pointer to the value to be searched.
- * @param compare Pointer to the comparison function.
- * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
- * @param occurrences Pointer to the array where the occurrences will be stored.
- * @param occurrencesSize Size of the occurrences array.
- * 
- * @returns Number of occurrences of the value if found, or 0 if not found.
- */
 size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order, size_t* occurrences, size_t occurrencesSize)
 {
+    if(base == NULLPTR || compare == NULLPTR || value == NULLPTR || sizeof_t == 0 || occurrences == NULLPTR)
+        return NOT_FOUND;
+    
+    if(order != ASCENDING && order != DESCENDING)
+        order = ASCENDING;
+
     int index;
     int left, right, count = 0;
     const byte* start = (const byte*) base;
@@ -230,18 +193,11 @@ static void merge(void* base, size_t sizeof_t, size_t left, size_t mid, size_t r
     return;
 }
 
-/**
- * @brief Sorts an array using Merge Sort algorithm.
- * If order is neither ASCENDING nor DESCENDING, ASCENDING is assumed.
- * 
- * @param base Pointer to the base address of the array.
- * @param sizeof_t Size of each element in the array.
- * @param size Number of elements in the array.
- * @param compare Pointer to the comparison function.
- * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
- */
 void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*), int order)
 {
+    if(base == NULLPTR || compare == NULLPTR || sizeof_t == 0)
+        return;
+
     if(size < 2)
         return;
 
@@ -267,15 +223,11 @@ void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, 
     return;
 }
 
-/**
- * @brief Reverses an array.
- * 
- * @param base Pointer to the base address of the array.
- * @param sizeof_t Size of each element in the array.
- * @param size Number of elements in the array.
- */
 void reverse(void* base, size_t sizeof_t, size_t size)
 {
+    if(base == NULLPTR || sizeof_t == 0)
+        return;
+
     byte* start = (byte*) base;
     size_t left = 0, right = size - 1;
 
@@ -290,20 +242,11 @@ void reverse(void* base, size_t sizeof_t, size_t size)
     return;
 }
 
-/**
- * @brief Checks if an array is sorted.
- * If order is neither ASCENDING nor DESCENDING, ASCENDING is assumed.
- *
- * @param base Pointer to the base address of the array.
- * @param sizeof_t Size of each element in the array.
- * @param size Number of elements in the array.
- * @param compare Pointer to the comparison function.
- * @param order ASCENDING if the array should be sorted in ascending order, DESCENDING otherwise.
- *
- * @returns 1 if the array is sorted, 0 otherwise.
- */
 int isSorted(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*), int order)
 {
+    if(base == NULLPTR || compare == NULLPTR || sizeof_t == 0)
+        return 0;
+
     size_t i, offset;
     const byte* start = (const byte*)base;
 
@@ -321,17 +264,11 @@ int isSorted(const void* base, size_t sizeof_t, size_t size, int (*compare)(cons
     return 1;
 }
 
-/**
- * @brief Shuffles an array using the Fisher-Yates algorithm.
- * 
- * @param base Pointer to the base address of the array.
- * @param sizeof_t Size of each element in the array.
- * @param size Number of elements in the array.
- * 
- * @warning Call srand for randomness before using this function
- */
 void shuffle(void* base, size_t sizeof_t, size_t size)
 {
+    if(base == NULLPTR || sizeof_t == 0)
+        return;
+
     size_t i, randIdx;
     byte* start = (byte*)base;
 

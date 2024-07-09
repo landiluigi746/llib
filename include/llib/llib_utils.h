@@ -33,7 +33,21 @@ typedef unsigned char byte;
 extern "C" {
 #endif
 
+/**
+ * @brief Waits for (approximately) milliseconds milliseconds using
+ * clock from time.h
+ * 
+ * @param milliseconds Milliseconds to wait
+*/
 void wait(uint32_t milliseconds);
+
+/**
+ * @brief Returns a FILE pointer to a file opened with given fileName
+ * in given fileMode. If the opening fails, exits the program
+ * 
+ * @param fileName Name of the file to open
+ * @param fileMode Mode of the file
+*/
 FILE* openFile(const char* fileName, const char* fileMode);
 
 #ifdef __cplusplus

@@ -1,201 +1,36 @@
 /**
- * Implementation file for llib algorithms
+ * Implementation file for llib string
  * 
  * Author: landiluigi746
- * Date: 2024-04-24
+ * Date: 2024-07-09
  * Github: https://github.com/landiluigi746
  */
 
 #include <llib/llib_string.h>
 
-/**
- * @brief Takes a string in input and stores every char
- * in string until it's full or the string ends.
- * Automatically clears the input buffer at the end if needed.
- * 
- * @param string String where the input is stored
- * @param capacity Capacity of the string
- * 
- * @returns The number of stored characters
- */
-size_t strInput(char* string, size_t capacity)
+size_t ll_strlen(const char* str)
 {
-    if(string == NULLPTR)
-        return 0;
-
-    int c;
-    size_t count = 0;
-
-    while(count < capacity - 1 && (c = getchar()) != EOF && c != '\n')
-        *(string + count++) = (char)c;
-
-    *(string + count) = '\0';
-
-    if(count == capacity - 1)
-        clearInBuf();
-
-    return count;
-}
-
-/**
- * @brief Finds the length of string
- * 
- * @param string String to check
- * 
- * @returns Length of string
- */
-size_t strLength(const char* string)
-{
-    if(string == NULLPTR)
+    if(str == NULLPTR)
         return 0;
 
     size_t count = 0;
 
-    while(*string++ != '\0')
-        ++count;
-
-    return count;
-}
-
-/**
- * @brief Copies the content of a string into another string
- * 
- * @param srcStr Source string
- * @param dstStr Destination string
- * @param dstSize Size of the destination string
- * 
- * @returns Count of characters copied
- */
-size_t strCopy(const char* srcStr, char* dstStr, size_t dstSize)
-{
-    if(srcStr == NULLPTR || dstStr == NULLPTR)
-        return 0;
+    while(*str++ != '\0')
+        count++;
     
-    size_t count = 0;
-
-    while(*(srcStr + count) != '\0' && count < dstSize - 1)
-    {
-        *(dstStr + count) = *(srcStr + count);
-        ++count;
-    }
-
-    *(dstStr + count) = '\0';
-
     return count;
 }
 
-/**
- * @brief Copies the n characters of a string into another string
- * 
- * @param srcStr Source string
- * @param copyCount Count of characters to copy
- * @param dstStr Destination string
- * @param dstSize Size of the destination string
- * 
- * @returns Count of characters copied
- */
-size_t strNCopy(const char* srcStr, size_t copyCount, char* dstStr, size_t dstSize)
+char* ll_strdup(const char* src)
 {
-    if(srcStr == NULLPTR || dstStr == NULLPTR)
-        return 0;
+    checkNullPtr(src);
 
-    size_t count = 0;
-
-    while(*(srcStr + count) != '\0' && count < copyCount && count < dstSize)
-    {
-        *(dstStr + count) = *(srcStr + count);
-        ++count;
-    }
-
-    *(dstStr + count) = '\0';
-
-    return count;
-}
-
-/**
- * @brief Compare two strings alphabetically
- * 
- * @param string1 String 1
- * @param string2 String 2
- * 
- * @returns -1 if string1 < string2, 0 if string1 == string2, 1 if string1 > string2
- */
-int strCompare(const char* string1, const char* string2)
-{
-    if(string1 != NULLPTR && string2 == NULLPTR)
-        return 1;
-
-    if(string1 == NULLPTR && string2 != NULLPTR)
-        return -1;
-
-    if((string1 == NULLPTR && string2 == NULLPTR) || string1 == string2)
-        return 0;
-
-    while(*string1 == *string2)
-    {
-        if(*string1 == '\0' || *string2 == '\0')
-            return 0;
-
-        ++string1;
-        ++string2;
-    }
-
-    return ((*string1 - *string2) > 0) ? 1 : -1;
-
-    return 0;
-}
-
-/**
- * @brief Compare n characters of two strings alphabetically
- * 
- * @param string1 String 1
- * @param string2 String 2
- * @param cmpCount Count of characters to compare
- * 
- * @returns -1 if string1 < string2, 0 if string1 == string2, 1 if string1 > string2
- */
-int strNCompare(const char* string1, const char* string2, size_t cmpCount)
-{
-    if(string1 != NULLPTR && string2 == NULLPTR)
-        return 1;
-
-    if(string1 == NULLPTR && string2 != NULLPTR)
-        return -1;
-
-    if((string1 == NULLPTR && string2 == NULLPTR) || string1 == string2 || cmpCount == 0)
-        return 0;
-    
-    size_t count = 0;
-
-    while(count < cmpCount && *string1 == *string2)
-    {
-        if(*string1 == '\0' || *string2 == '\0')
-            return 0;
-
-        ++string1;
-        ++string2;
-    }
-
-    return ((*string1 - *string2) > 0) ? 1 : -1;
-}
-
-/**
- * @brief Duplicates a string
- * 
- * @param string String to duplicate
- * 
- * @returns Pointer to the duplicated string
- */
-char* strDuplicate(const char* string)
-{
-    checkNullPtr(string);
-
-    size_t count = 0, len = strLength(string);
+    size_t count = 0, len = ll_strlen(src);
     char* duplicate = (char*) allocate(len + 1);
 
-    while(*string != '\0')
+    while(*(src + count) != '\0')
     {
-        *(duplicate + count) = *(string + count);
+        *(duplicate + count) = *(src + count);
         ++count;
     }
 
@@ -204,19 +39,194 @@ char* strDuplicate(const char* string)
     return duplicate;
 }
 
-/**
- * @brief Reverses a string of length characters
- * 
- * @param string String to reverse
- * @param limit Length of string (how far to reverse)
- */
-void strReverse(char* string, size_t limit)
+int ll_strcmp(const char* str1, const char* str2)
 {
-    if(string == NULLPTR)
+    if(str1 != NULLPTR && str2 == NULLPTR)
+        return 1;
+
+    if(str1 == NULLPTR && str2 != NULLPTR)
+        return -1;
+
+    if((str1 == NULLPTR && str2 == NULLPTR) || str1 == str2)
+        return 0;
+
+    while(*str1 == *str2)
+    {
+        if(*str1 == '\0' || *str2 == '\0')
+            return 0;
+
+        ++str1;
+        ++str2;
+    }
+
+    return ((*str1 - *str2) > 0) ? 1 : -1;
+}
+
+int ll_strncmp(const char* str1, const char* str2, size_t cmpCount)
+{
+    if(str1 != NULLPTR && str2 == NULLPTR)
+        return 1;
+    
+    if(str1 == NULLPTR && str2 != NULLPTR)
+        return -1;
+    
+    if((str1 == NULLPTR && str2 == NULLPTR) || str1 == str2)
+        return 0;
+    
+    while(*str1 == *str2 && cmpCount > 0)
+    {
+        if(*str1 == '\0' || *str2 == '\0')
+            return 0;
+        
+        ++str1;
+        ++str2;
+        --cmpCount;
+    }
+    
+    return ((*str1 - *str2) > 0) ? 1 : -1;
+}
+
+string* strCreate(size_t capacity)
+{
+    string* str = (string*) allocate(sizeof(string));
+
+    *str = (string){
+        .buf = allocate(sizeof(char) * capacity),
+        .len = 0,
+        .capacity = capacity
+    };
+
+    return str;
+}
+
+string* strCreateFrom(const char* src)
+{
+    char* dup = ll_strdup(src);
+    size_t len = ll_strlen(src);
+
+    string* str = (string*) allocate(sizeof(string));
+
+    *str = (string){
+        .buf = dup,
+        .len = len,
+        .capacity = len + 1
+    };
+
+    return str;
+}
+
+string* strDuplicate(const string* src)
+{
+    string* str = strCreate(src->capacity);
+    strCopy(src->buf, str);
+
+    return str;
+}
+
+void strResize(string* str, size_t newCapacity)
+{
+    if(str == NULLPTR)
+        return;
+    
+    if(str->buf == NULLPTR)
+        str->buf = allocate(sizeof(char) * newCapacity);
+    else
+        str->buf = reallocate(str->buf, sizeof(char) * str->capacity);
+
+    if(newCapacity < str->capacity)
+    {
+        str->len = newCapacity;
+        str->buf[str->len] = '\0';
+    }
+
+    str->capacity = newCapacity;
+
+    return;
+}
+
+void strDelete(string* str)
+{
+    deallocate(str->buf);
+    deallocate(str);
+
+    return;
+}
+
+size_t strInput(string* str)
+{
+    if(str->buf == NULLPTR)
+        return 0;
+
+    int c;
+    size_t count = 0;
+
+    while(count < str->capacity - 1 && (c = getchar()) != EOF && c != '\n')
+        *(str->buf + count++) = (char)c;
+
+    *(str->buf + count) = '\0';
+    str->len = count;
+
+    if(count == str->capacity - 1)
+        clearInBuf();
+
+    return count;
+}
+
+size_t strCopy(const char* src, string* dst)
+{
+    if(src == NULLPTR || dst == NULLPTR)
+        return 0;
+    
+    size_t count = 0;
+
+    while(*(src + count) != '\0' && count < dst->capacity - 1)
+    {
+        *(dst->buf + count) = *(src + count);
+        ++count;
+    }
+
+    *(dst->buf + count) = '\0';
+    dst->len = count;
+
+    return count;
+}
+
+size_t strNCopy(const char* src, size_t copyCount, string* dst)
+{
+    if(src == NULLPTR || dst->buf == NULLPTR)
+        return 0;
+
+    size_t count = 0;
+
+    while(*(src + count) != '\0' && count < copyCount && count < dst->capacity)
+    {
+        *(dst->buf + count) = *(src + count);
+        ++count;
+    }
+
+    *(dst->buf + count) = '\0';
+    dst->len = count;
+
+    return count;
+}
+
+int strCompare(const string* str1, const string* str2)
+{
+    return ll_strcmp(str1->buf, str2->buf);
+}
+
+int strNCompare(const string* str1, const string* str2, size_t cmpCount)
+{
+    return ll_strncmp(str1->buf, str2->buf, cmpCount);
+}
+
+void strReverse(string* str, size_t limit)
+{
+    if(str->buf == NULLPTR)
         return;
 
-    char* left = string;
-    char* right = string + limit - 1;
+    char* left = str->buf;
+    char* right = str->buf + (min(str->len, limit) - 1);
 
     while(left < right)
     {
@@ -229,68 +239,47 @@ void strReverse(char* string, size_t limit)
     return;
 }
 
-/**
- * @brief Finds the first occurrence of strToFind in string
- * 
- * @param string String to search in
- * @param length Length of string
- * @param strToFind String to search for
- * 
- * @returns Index of the first occurrence or -1 if not found
- */
-int strFind(const char* string, size_t length, const char* strToFind)
+int strFind(const string* str, const char* strToFind)
 {
-    if(string == NULLPTR || strToFind == NULLPTR)
+    if(str->buf == NULLPTR || strToFind == NULLPTR)
         return NOT_FOUND;
 
-    size_t i;
+    size_t i, findLen = ll_strlen(strToFind);
 
-    for(i = 0; i < length - 1 && *(string + i) != '\0'; i++)
+    if(str->len < findLen)
+        return NOT_FOUND;
+
+    for(i = 0; (i < str->len - findLen + 1) /*&& *(str->buf + i) != '\0'*/; i++)
     {
-        if(strCompare((string + i), strToFind) == 0)
+        if(ll_strcmp((str->buf + i), strToFind) == 0)
             return i;
     }
 
     return NOT_FOUND;
 }
 
-/**
- * @brief Concatenates two strings (string1 and string2) in dest
- * 
- * @param string1 String 1
- * @param string2 String 2
- * @param dest Destination string
- * @param destSize Size of destination string
- * 
- * @returns Length of the concatenated string
- */
-size_t strConcat(const char* string1, const char* string2, char* dest, size_t destSize)
+size_t strConcat(string* str1, const char* str2)
 {
-    if(string1 == NULLPTR || string2 == NULLPTR || dest == NULLPTR)
+    if(str1->buf == NULLPTR || str2 == NULLPTR)
         return 0;
     
     size_t count = 0;
-
-    while(count < destSize - 1 && *string1 != '\0')
-        *(dest + count++) = *string1++;
+    char* start = str1->buf + str1->len;
     
-    while(count < destSize - 1 && *string2 != '\0')
-        *(dest + count++) = *string2++;
+    while(count < str1->capacity - 1 && *str2 != '\0')
+        *(start + count++) = *str2++;
     
-    *(dest + count) = '\0';
+    *(start + count) = '\0';
+    str1->len += count;
 
     return count;
 }
 
-/**
- * @brief Encrypts a string using Caesar's cipher
- * 
- * @param string String to encrypt
- * @param count Number of characters to shift
- */
-void strCipher(char* string, size_t count)
+void strCipher(string* str, size_t count)
 {
-    if(string == NULLPTR)
+    char* start = str->buf;
+
+    if(start == NULLPTR)
         return;
 
     //avoid useless operations if there is nothing to encrypt
@@ -299,32 +288,27 @@ void strCipher(char* string, size_t count)
 
     count = count % ('~' - '!' + 1);
 
-    while(*string != '\0')
+    while(*start != '\0')
     {
-        if(iscntrl(*string))
-            goto next;
-
-        if((*string >= '!' && *string <= '~' - count))
-            *string += count;
-        else
-            *string -= 94 - count;
-
-        next:
-            ++string;
+        if(!iscntrl(*start))
+        {
+            if((*start >= '!' && *start <= '~' - count))
+                *start += count;
+            else
+                *start -= 94 - count;
+        }
+        
+        ++start;
     }
 
     return;
 }
 
-/**
- * @brief Decrypts a string using Caesar's cipher
- * 
- * @param string String to decrypt
- * @param count Number of characters to unshift
- */
-void strDecipher(char* string, size_t count)
+void strDecipher(string* str, size_t count)
 {
-    if(string == NULLPTR)
+    char* start = str->buf;
+
+    if(start == NULLPTR)
         return;
 
     //avoid useless operations if there is nothing to decrypt
@@ -333,18 +317,17 @@ void strDecipher(char* string, size_t count)
     
     count = count % ('~' - '!' + 1);
 
-    while(*string != '\0')
+    while(*start != '\0')
     {
-        if(iscntrl(*string))
-            goto next;
-
-        if((*string >= '!' + count && *string <= '~'))
-            *string -= count;
-        else
-            *string += 94 - count;
-
-        next:
-            ++string;
+        if(!iscntrl(*start))
+        {
+            if((*start >= '!' + count && *start <= '~'))
+                *start -= count;
+            else
+                *start += 94 - count;
+        }
+        
+        ++start;
     }
 
     return;

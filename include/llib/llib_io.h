@@ -31,7 +31,21 @@ typedef unsigned char byte;
 extern "C" {
 #endif // __cplusplus
 
+/**
+ * @brief Clears stdin by discarding every 
+ * character until a '\n' or EOF is detected
+ */
 void clearInBuf(void);
+
+/**
+ * @brief Reads input from stdin based on the specified format and stores it at the provided address.
+ * Automatically clears the buffer at the end.
+ *
+ * @param format The format string for reading input.
+ * @param address Pointer to the memory location where the input will be stored.
+ *
+ * @return The number of input items successfully matched and assigned.
+ */
 int input(const char* format, void* address);
 
 #ifdef __cplusplus
