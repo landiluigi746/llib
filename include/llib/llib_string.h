@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <stdarg.h>
 #include <llib/llib_io.h>
 #include <llib/llib_memory.h>
 
@@ -98,6 +99,16 @@ void strResize(string* str, size_t newCapacity);
  * @param str The string to delete
  */
 void strDelete(string* str);
+
+/**
+ * @brief Print to a string
+ * 
+ * @param str The string to print to
+ * @param fmt The format string
+ * 
+ * @returns The length of the formatted string or -1 on NULLPTR string
+ */
+int strPrintf(string* str, const char* fmt, ...);
 
 /**
  * @brief Get input from the user

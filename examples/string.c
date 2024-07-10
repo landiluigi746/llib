@@ -13,6 +13,11 @@ int main(void)
     //string creation
     string* str = strCreate(10);
 
+    //print to a string
+    string* strp = strCreate(10);
+    strPrintf(strp, "%d this string is longer than 10 characters", 1);
+    puts(strp->buf); //output: 1 this st
+
     //string input
     string* buf = strCreate(100);
     size_t len = strInput(buf);
@@ -39,6 +44,7 @@ int main(void)
 
     //string deletion
     strDelete(str);
+    strDelete(strp);
     strDelete(buf);
     strDelete(str1);
     strDelete(str3);

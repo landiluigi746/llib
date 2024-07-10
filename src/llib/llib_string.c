@@ -152,9 +152,27 @@ void strDelete(string* str)
     return;
 }
 
+int strPrintf(string* str, const char* fmt, ...)
+{
+    if(str == NULLPTR || str->buf == NULLPTR)
+        return -1;
+
+    int writtenCount;
+    va_list args;
+
+    va_start(args, fmt);
+    writtenCount = vsnprintf(str->buf, str->capacity, fmt, args);
+    va_end(args);
+
+    str->len = (writtenCount > str->capacity) ? str->capacity : writtenCount;
+    str->buf[str->len] = '\0';
+
+    return (int)str->len;
+}
+
 size_t strInput(string* str)
 {
-    if(str->buf == NULLPTR)
+    if(str == NULLPTR || str->buf == NULLPTR)
         return 0;
 
     int c;
@@ -174,7 +192,7 @@ size_t strInput(string* str)
 
 size_t strCopy(const char* src, string* dst)
 {
-    if(src == NULLPTR || dst == NULLPTR)
+    if(src == NULLPTR || dst == NULLPTR || dst->buf == NULLPTR)
         return 0;
     
     size_t count = 0;
@@ -193,7 +211,7 @@ size_t strCopy(const char* src, string* dst)
 
 size_t strNCopy(const char* src, size_t copyCount, string* dst)
 {
-    if(src == NULLPTR || dst->buf == NULLPTR)
+    if(src == NULLPTR || dst == NULLPTR || dst->buf == NULLPTR)
         return 0;
 
     size_t count = 0;
@@ -212,17 +230,35 @@ size_t strNCopy(const char* src, size_t copyCount, string* dst)
 
 int strCompare(const string* str1, const string* str2)
 {
+    if(str1 != NULLPTR && str2 == NULLPTR)
+        return 1;
+
+    if(str1 == NULLPTR && str2 != NULLPTR)
+        return -1;
+
+    if((str1 == NULLPTR && str2 == NULLPTR) || str1 == str2)
+        return 0;
+
     return ll_strcmp(str1->buf, str2->buf);
 }
 
 int strNCompare(const string* str1, const string* str2, size_t cmpCount)
 {
+    if(str1 != NULLPTR && str2 == NULLPTR)
+        return 1;
+
+    if(str1 == NULLPTR && str2 != NULLPTR)
+        return -1;
+
+    if((str1 == NULLPTR && str2 == NULLPTR) || str1 == str2)
+        return 0;
+
     return ll_strncmp(str1->buf, str2->buf, cmpCount);
 }
 
 void strReverse(string* str, size_t limit)
 {
-    if(str->buf == NULLPTR)
+    if(str == NULLPTR || str->buf == NULLPTR)
         return;
 
     char* left = str->buf;
@@ -241,7 +277,7 @@ void strReverse(string* str, size_t limit)
 
 int strFind(const string* str, const char* strToFind)
 {
-    if(str->buf == NULLPTR || strToFind == NULLPTR)
+    if(str == NULLPTR || str->buf == NULLPTR || strToFind == NULLPTR)
         return NOT_FOUND;
 
     size_t i, findLen = ll_strlen(strToFind);
@@ -260,7 +296,7 @@ int strFind(const string* str, const char* strToFind)
 
 size_t strConcat(string* str1, const char* str2)
 {
-    if(str1->buf == NULLPTR || str2 == NULLPTR)
+    if(str1 == NULLPTR || str1->buf == NULLPTR || str2 == NULLPTR)
         return 0;
     
     size_t count = 0;
@@ -277,10 +313,10 @@ size_t strConcat(string* str1, const char* str2)
 
 void strCipher(string* str, size_t count)
 {
-    char* start = str->buf;
-
-    if(start == NULLPTR)
+    if(str == NULLPTR || str->buf == NULLPTR)
         return;
+
+    char* start = str->buf;
 
     //avoid useless operations if there is nothing to encrypt
     if(count == 0 || count % ('~' - '!' + 1) == 0)
@@ -306,10 +342,10 @@ void strCipher(string* str, size_t count)
 
 void strDecipher(string* str, size_t count)
 {
-    char* start = str->buf;
-
-    if(start == NULLPTR)
+    if(str == NULLPTR || str->buf == NULLPTR)
         return;
+
+    char* start = str->buf;
 
     //avoid useless operations if there is nothing to decrypt
     if(count == 0 || count % ('~' - '!' + 1) == 0)
