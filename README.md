@@ -59,6 +59,7 @@ Contains implementations of several useful algorithms for arrays, including:
 - linear and binary search for arrays;
 - sorting (currently merge sort, planning on implementing other algorithms);
 - shuffling
+
 Note: this module isn't standalone. You will also need **memory** to use it.
 
 [Example code here](examples/algorithms.c)
