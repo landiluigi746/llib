@@ -141,6 +141,30 @@ int isSorted(const void* base, size_t sizeof_t, size_t size, int (*compare)(cons
  */
 void shuffle(void* base, size_t sizeof_t, size_t size);
 
+/**
+ * @brief Finds the minimum value in a not sorted array.
+ * 
+ * @param base Pointer to the base address of the array.
+ * @param sizeof_t Size of each element in the array.
+ * @param size Number of elements in the array.
+ * @param compare Pointer to the comparison function.
+ * 
+ * @returns The index of the minimum value in the array
+ */
+int findMin(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*));
+
+/**
+ * @brief Finds the maximum value in a not sorted array.
+ * 
+ * @param base Pointer to the base address of the array.
+ * @param sizeof_t Size of each element in the array.
+ * @param size Number of elements in the array.
+ * @param compare Pointer to the comparison function.
+ * 
+ * @returns The index of the maximum value in the array
+ */
+int findMax(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*));
+
 #ifdef __cplusplus
 }
 #endif

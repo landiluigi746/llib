@@ -28,5 +28,11 @@ int main(void)
         order, occurrences array, size of occurrences array */
     size_t count = bSearchOccurrences(arr2, sizeof(int), size, &val, &compareInts, ASCENDING, occurrences, sizeOccurences);
 
+    //we can search the index of the minimum/maximum value in an array
+    int arr3[] = {1, 2, 3, 4, 5, 5, 5, 6, 7, 8};
+    size = sizeof(arr3) / sizeof(arr3[0]);
+    //use findMax if you want the index of the maximum value
+    int minIndex = findMin(arr3, sizeof(int), size, &compareInts);
+
     return 0;
 }

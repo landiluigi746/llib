@@ -127,19 +127,23 @@ void strResize(string* str, size_t newCapacity)
 {
     if(str == NULLPTR)
         return;
-    
-    if(str->buf == NULLPTR)
-        str->buf = allocate(sizeof(char) * newCapacity);
-    else
-        str->buf = reallocate(str->buf, sizeof(char) * str->capacity);
 
-    if(newCapacity < str->capacity)
+    if(str->buf == NULLPTR)
     {
-        str->len = newCapacity;
-        str->buf[str->len] = '\0';
+        str->buf = allocate(sizeof(char) * newCapacity);
+        str->len = 0;
+        str->capacity = newCapacity;
+        return;
     }
 
+    str->buf = reallocate(str->buf, sizeof(char) * newCapacity);
     str->capacity = newCapacity;
+
+    if(str->len > newCapacity - 1)
+    {
+        str->len = newCapacity - 1;
+        str->buf[str->len] = '\0';
+    }
 
     return;
 }
@@ -164,7 +168,7 @@ int strPrintf(string* str, const char* fmt, ...)
     writtenCount = vsnprintf(str->buf, str->capacity, fmt, args);
     va_end(args);
 
-    str->len = (writtenCount > str->capacity) ? str->capacity : writtenCount;
+    str->len = (writtenCount > str->capacity) ? str->capacity - 1 : writtenCount - 1;
     str->buf[str->len] = '\0';
 
     return (int)str->len;
@@ -216,7 +220,7 @@ size_t strNCopy(const char* src, size_t copyCount, string* dst)
 
     size_t count = 0;
 
-    while(*(src + count) != '\0' && count < copyCount && count < dst->capacity)
+    while(*(src + count) != '\0' && count < copyCount && count < dst->capacity - 1)
     {
         *(dst->buf + count) = *(src + count);
         ++count;

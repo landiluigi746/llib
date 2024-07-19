@@ -19,11 +19,15 @@ int main(void)
     int arr2[10];
     copyMemory(arr1, arr2, sizeof(arr1), sizeof(arr2));
 
-    //copy array (when arrays are the same size)
+    //copy array
     int arr3[] = {1, 2, 3, 4, 5, 6};
     int arr4[6];
-    size_t size = 6;
-    copyArray(arr3, arr4, sizeof(int), size);
+    copyArray(arr3, arr4, sizeof(int), sizeof(arr3), sizeof(arr4));
+
+    //set memory
+    setMemory(arr3, sizeof(int), 0);
+
+    printf("a = %d, b = %d\n", a, b);
     
     return 0;
 }

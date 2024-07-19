@@ -66,15 +66,15 @@ void copyMemory(const void* src, void* dst, size_t srcSize, size_t dstSize)
     return;
 }
 
-void copyArray(const void* src, void* dst, size_t sizeof_t, size_t size)
+void copyArray(const void* src, void* dst, size_t sizeof_t, size_t sizeSrc, size_t sizeDst)
 {
-    if(src == NULLPTR || dst == NULLPTR)
+    if(src == NULLPTR || dst == NULLPTR || sizeSrc == 0 || sizeDst == 0 || sizeof_t == 0)
         return;
     
     const byte* s = (const byte*) src;
     byte* d = (byte*) dst;
 
-    while(size--)
+    while(sizeSrc-- > 0 && sizeDst-- > 0 && s != d)
     {
         ASSIGN(d, s, sizeof_t);
         d += sizeof_t;

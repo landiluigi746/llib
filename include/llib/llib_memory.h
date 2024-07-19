@@ -95,7 +95,7 @@ void copyMemory(const void* src, void* dst, size_t srcSize, size_t dstSize);
  * @param sizeof_t Size of each element in the array
  * @param size Number of elements in the array
  */
-void copyArray(const void* src, void* dst, size_t sizeof_t, size_t size);
+void copyArray(const void* src, void* dst, size_t sizeof_t, size_t sizeSrc, size_t sizeDst);
 
 /**
  * @brief Allocates size bytes, initializes it with value and returns a pointer to it

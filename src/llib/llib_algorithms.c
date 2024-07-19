@@ -56,7 +56,7 @@ int bSearch(const void* base, size_t sizeof_t, size_t size, const void* value, i
 size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), size_t* occurrences, size_t occurrencesSize)
 {
     if(base == NULLPTR || compare == NULLPTR || value == NULLPTR || sizeof_t == 0 || occurrences == NULLPTR)
-        return NOT_FOUND;
+        return 0;
 
     size_t i, count = 0;
     const byte* start = (const byte*) base;
@@ -77,8 +77,8 @@ size_t lSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const 
 
 size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const void* value, int (*compare)(const void*, const void*), int order, size_t* occurrences, size_t occurrencesSize)
 {
-    if(base == NULLPTR || compare == NULLPTR || value == NULLPTR || sizeof_t == 0 || occurrences == NULLPTR)
-        return NOT_FOUND;
+    if(base == NULLPTR || compare == NULLPTR || value == NULLPTR || sizeof_t == 0 || occurrences == NULLPTR || occurrencesSize == 0)
+        return 0;
     
     if(order != ASCENDING && order != DESCENDING)
         order = ASCENDING;
@@ -86,9 +86,6 @@ size_t bSearchOccurrences(const void* base, size_t sizeof_t, size_t size, const 
     int index;
     int left, right, count = 0;
     const byte* start = (const byte*) base;
-
-    if(occurrencesSize == 0)
-        return 0;
 
     index = bSearch(base, sizeof_t, size, value, compare, order);
 
@@ -145,8 +142,8 @@ static void merge(void* base, size_t sizeof_t, size_t left, size_t mid, size_t r
     byte* leftPart = (byte*) allocate(size1 * sizeof_t);
     byte* rightPart = (byte*) allocate(size2 * sizeof_t);
 
-    copyArray(leftBegin, leftPart, sizeof_t, size1); //copy the left halve into leftPart
-    copyArray(rightBegin, rightPart, sizeof_t, size2); //copy the right halve into rightPart
+    copyArray(leftBegin, leftPart, sizeof_t, size1, size1); //copy the left halve into leftPart
+    copyArray(rightBegin, rightPart, sizeof_t, size2, size2); //copy the right halve into rightPart
 
     size_t i = left, j = 0, k = 0;
 
@@ -195,10 +192,7 @@ static void merge(void* base, size_t sizeof_t, size_t left, size_t mid, size_t r
 
 void sort(void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*), int order)
 {
-    if(base == NULLPTR || compare == NULLPTR || sizeof_t == 0)
-        return;
-
-    if(size < 2)
+    if(base == NULLPTR || compare == NULLPTR || sizeof_t == 0 || size < 2)
         return;
 
     if(order != ASCENDING && order != DESCENDING)
@@ -279,4 +273,36 @@ void shuffle(void* base, size_t sizeof_t, size_t size)
     }
 
     return;
+}
+
+int findMin(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*))
+{
+    if(base == NULLPTR || sizeof_t == 0)
+        return NOT_FOUND;
+    
+    size_t i;
+    size_t minIdx = 0;
+    const byte* start = (const byte*)base;
+
+    for(i = 0; i < size; i++)
+        if(i != minIdx && compare((start + i * sizeof_t), (start + minIdx * sizeof_t)) < 0)
+            minIdx = i;
+
+    return (int)minIdx;
+}
+
+int findMax(const void* base, size_t sizeof_t, size_t size, int (*compare)(const void*, const void*))
+{
+    if(base == NULLPTR || compare == NULLPTR || sizeof_t == 0)
+        return NOT_FOUND;
+    
+    size_t i;
+    size_t maxIdx = 0;
+    const byte* start = (const byte*)base;
+
+    for(i = 0; i < size; i++)
+        if(i != maxIdx && compare((start + i * sizeof_t), (start + maxIdx * sizeof_t)) > 0)
+            maxIdx = i;
+
+    return (int)maxIdx;
 }
