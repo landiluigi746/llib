@@ -15,10 +15,10 @@ extern "C" {
 
 #include <llib/llib_memory.h>
 #include <llib/llib_algorithms.h>
-#include <llib/llib_memory.h>
 #include <llib/llib_io.h>
 #include <llib/llib_string.h>
 #include <llib/llib_utils.h>
+#include <llib/llib_list.h>
 
 #ifdef __cplusplus
 }

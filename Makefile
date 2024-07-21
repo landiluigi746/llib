@@ -15,6 +15,7 @@ RM = rm -f
 all: examples
 
 examples:
+	$(CC) $(CFLAGS) -o examples/list examples/list.c
 	$(CC) $(CFLAGS) -o examples/memory examples/memory.c
 	$(CC) $(CFLAGS) -o examples/utils examples/utils.c
 	$(CC) $(CFLAGS) -o examples/string examples/string.c
