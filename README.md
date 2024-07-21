@@ -29,6 +29,7 @@ Make sure to link the library (or the modules) during compilation and update you
 - [string](#string) - string struct and related functions (create, delete, copy, compare, concat, input, etc.)
 - [io](#io) - io utilities (i.e. buffer cleaning)
 - [algorithms](#algorithms) - various algorithms (searching, sorting, shuffling)
+- [list](#list) - doubly linked list struct and related basic functions (push, pop, search, remove)
 
 You can find examples in the examples directory and compile them using `make examples`.
 
@@ -63,3 +64,9 @@ Contains implementations of several useful algorithms for arrays, including:
 Note: this module isn't standalone. You will also need **memory** to use it.
 
 [Example code here](examples/algorithms.c)
+
+### list
+Provides a list struct implemented as a doubly linked list and related basic functions, like push, pop, search and delete
+Note this module isn't standalone. You will also need **memory** to use it.
+
+[Example code here](examples/list.c)
