@@ -13,7 +13,7 @@
 
 node* nodeCreate(void)
 {
-    return allocateInit(sizeof(list), 0);
+    return allocateInit(sizeof(node), 0);
 }
 
 list* listCreate(void)
@@ -90,11 +90,13 @@ void listPopBack(list* li)
     if(li == NULLPTR || li->size == 0)
         return;
     
-    node* prev = li->tail->prev;
-    deallocate(li->tail);
-    li->tail = prev;
-    li->tail->next = NULLPTR;
+    node* temp = li->tail;
+    li->tail = li->tail->prev;
 
+    if(li->tail != NULLPTR)
+        li->tail->next = NULLPTR;
+    
+    deallocate(temp);
     --(li->size);
 
     if(li->size == 0)
@@ -182,7 +184,13 @@ void listRemove(list* li, int index)
     size_t i = 0;
     node* curr;
 
-    if(index == 0)
+    if(li->size == 1)
+    {
+        curr = li->head;
+        li->head = NULLPTR;
+        li->tail = NULLPTR;
+    }
+    else if(index == 0)
     {
         curr = li->head;
         li->head = li->head->next;
