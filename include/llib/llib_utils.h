@@ -34,6 +34,14 @@ extern "C" {
 #endif
 
 /**
+ * @brief Macro to create a pair struct
+ * 
+ * @param type1 First type
+ * @param type2 Second type
+*/
+#define PAIR(type1, type2) struct { type1 first; type2 second; }
+
+/**
  * @brief Waits for (approximately) milliseconds milliseconds using
  * clock from time.h
  * 

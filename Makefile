@@ -10,17 +10,19 @@ LLIB_SRC = src/llib/*.c
 LLIB_OBJ = ./*.o
 CFLAGS = $(LLIB_SRC) -std=c99 -Iinclude
 RM = rm -f
+OUT_DIR = out
 
 .PHONY: all examples llib run clean
 all: examples
 
 examples:
-	$(CC) $(CFLAGS) -o examples/list examples/list.c
-	$(CC) $(CFLAGS) -o examples/memory examples/memory.c
-	$(CC) $(CFLAGS) -o examples/utils examples/utils.c
-	$(CC) $(CFLAGS) -o examples/string examples/string.c
-	$(CC) $(CFLAGS) -o examples/io examples/io.c
-	$(CC) $(CFLAGS) -o examples/algorithms examples/algorithms.c
+	mkdir -p $(OUT_DIR)
+	$(CC) $(CFLAGS) -o $(OUT_DIR)/list examples/list.c
+	$(CC) $(CFLAGS) -o $(OUT_DIR)/memory examples/memory.c
+	$(CC) $(CFLAGS) -o $(OUT_DIR)/utils examples/utils.c
+	$(CC) $(CFLAGS) -o $(OUT_DIR)/string examples/string.c
+	$(CC) $(CFLAGS) -o $(OUT_DIR)/io examples/io.c
+	$(CC) $(CFLAGS) -o $(OUT_DIR)/algorithms examples/algorithms.c
 	@echo "Done! Examples compiled. Use 'make run' to run them."
 	make clean
 
@@ -31,11 +33,12 @@ llib:
 	make clean
 
 run:
-	./examples/memory
-	./examples/utils
-	./examples/string
-	./examples/io
-	./examples/algorithms
+	./$(OUT_DIR)/list
+	./$(OUT_DIR)/memory
+	./$(OUT_DIR)/utils
+	./$(OUT_DIR)/string
+	./$(OUT_DIR)/io
+	./$(OUT_DIR)/algorithms
 
 clean:
 	$(RM) examples/*.o

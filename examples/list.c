@@ -1,5 +1,7 @@
 #include <llib/llib.h>
 
+#define SIZE 32768
+
 //comparator function
 int compareInts(const void* A, const void* B)
 {
@@ -15,7 +17,7 @@ void printList(list* li)
     printf("List\n");
 
     for(i = 0; i < li->size; i++, curr = curr->next)
-        printf("%llu: %d\n", i, *(int*)curr->data);
+        printf("index %llu: %d\n", i, *(int*)curr->data);
 
     printf("\n");
 
@@ -27,15 +29,13 @@ int main(void)
     //create a list
     list* li = listCreate();
     int vals[] = {1, 2, 3, 4, 5, 6, 7}; //test values
+    int size = (int) sizeof(vals) / sizeof(vals[0]);
+    int i;
 
     //add some values
-    listPushBack(li, &vals[0]);
-    listPushBack(li, &vals[1]);
-    listPushBack(li, &vals[2]);
-    listPushBack(li, &vals[3]);
-    listPushBack(li, &vals[4]);
-    listPushBack(li, &vals[5]);
-
+    for(i = 0; i < size - 1; i++)
+        listPushBack(li, &vals[i]);
+    
     //print the list
     printList(li);
 
@@ -45,13 +45,24 @@ int main(void)
     printList(li);
 
     //get the index of some values
-    printf("index of %d: %d\n", vals[3], listGetIndex(li, listSearch(li, &vals[3], &compareInts)));
-    printf("index of %d: %d\n", vals[6], listGetIndex(li, listSearch(li, &vals[6], &compareInts)));
+    printf("index of %d: %d\n", vals[3], listGetNodeIndex(li, listSearch(li, &vals[3], &compareInts)));
+    printf("index of %d: %d\n", vals[6], listGetNodeIndex(li, listSearch(li, &vals[6], &compareInts)));
 
-    //remove some values
+    //remove some values at specified index
     listRemove(li, 2);
     listRemove(li, 0);
 
+    printList(li);
+
+    //insert some values
+    listInsert(li, 0, &vals[3]);
+    listInsert(li, li->size, &vals[6]);
+    listInsert(li, (li->size >> 1) + 1, &vals[0]);
+
+    printList(li);
+
+    //sort the list
+    listSort(li, &compareInts, ASCENDING);
     printList(li);
 
     //delete the list

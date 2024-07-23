@@ -53,4 +53,5 @@ dkms.conf
 
 *.txt
 tmp
+out
 .vscode
