@@ -19,6 +19,7 @@ extern "C" {
 #include <llib/llib_string.h>
 #include <llib/llib_utils.h>
 #include <llib/llib_list.h>
+#include <llib/llib_darray.h>
 
 #ifdef __cplusplus
 }

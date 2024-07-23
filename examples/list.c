@@ -1,6 +1,12 @@
-#include <llib/llib.h>
+/**
+ * Example of using the list
+ * 
+ * Author: landiluigi746
+ * Date: 2024-07-22
+ * Github: https://github.com/landiluigi746
+ */
 
-#define SIZE 32768
+#include <llib/llib_list.h>
 
 //comparator function
 int compareInts(const void* A, const void* B)

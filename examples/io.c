@@ -1,5 +1,5 @@
 /**
- * Example file for llib i/o
+ * Example using the io
  * 
  * Author: landiluigi746
  * Date: 2024-07-09

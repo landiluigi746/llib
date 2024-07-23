@@ -1,5 +1,5 @@
 /**
- * Example file for llib string
+ * Example of using the string
  * 
  * Author: landiluigi746
  * Date: 2024-07-09

@@ -1,5 +1,12 @@
+/**
+ * Example of using the utils
+ * 
+ * Author: landiluigi746
+ * Date: 2024-07-09
+ * Github: https://github.com/landiluigi746
+ */
+
 #include <llib/llib_utils.h>
-#include <stdio.h>
 
 int main(void)
 {

@@ -1,5 +1,5 @@
 /**
- * Implementation file for llib darray
+ * Example of using the darray
  * 
  * Author: landiluigi746
  * Date: 2024-07-23
@@ -7,7 +7,6 @@
  */
 
 #include <llib/llib_darray.h>
-#include <time.h>
 
 //function to print the darray
 void printDarray(darray* darr)

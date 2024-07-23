@@ -1,3 +1,11 @@
+/**
+ * Example of using the algorithms
+ * 
+ * Author: landiluigi746
+ * Date: 2024-07-09
+ * Github: https://github.com/landiluigi746
+ */
+
 #include <llib/llib_algorithms.h>
 
 //comparator function
