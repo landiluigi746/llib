@@ -17,6 +17,7 @@ all: examples
 
 examples:
 	mkdir -p $(OUT_DIR)
+	$(CC) $(CFLAGS) -o $(OUT_DIR)/darray examples/darray.c
 	$(CC) $(CFLAGS) -o $(OUT_DIR)/list examples/list.c
 	$(CC) $(CFLAGS) -o $(OUT_DIR)/memory examples/memory.c
 	$(CC) $(CFLAGS) -o $(OUT_DIR)/utils examples/utils.c

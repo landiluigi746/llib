@@ -30,6 +30,7 @@ Make sure to link the library (or the modules) during compilation and update you
 - [io](#io) - io utilities (i.e. buffer cleaning)
 - [algorithms](#algorithms) - various algorithms (searching, sorting, shuffling)
 - [list](#list) - doubly linked list struct and related basic functions (push, pop, search, remove)
+- [darray](#darray) - dynamic-array struct and related functions (push, pop, resize)
 
 You can find examples in the examples directory and compile them using `make examples`.
 
@@ -46,7 +47,7 @@ Contains utility functions, like wait, safe fopen
 ### string
 Contains string struct and related functions, like create, delete, copy, compare, concat, input, etc.
 Also contains utility functions for normal char arrays.
-Note: this module isn't standalone. You will also need **memory** and **io** to use it.
+Note: this module isn't standalone. You will also need [memory](#memory) and [io](#io) to use it.
 
 [Example code here](examples/string.c)
 
@@ -61,12 +62,18 @@ Contains implementations of several useful algorithms for arrays, including:
 - sorting (currently merge sort, planning on implementing other algorithms);
 - shuffling
 
-Note: this module isn't standalone. You will also need **memory** to use it.
+Note: this module isn't standalone. You will also need [memory](#memory) to use it.
 
 [Example code here](examples/algorithms.c)
 
 ### list
 Provides a list struct implemented as a doubly linked list and related basic functions, like push, pop, search and delete
-Note this module isn't standalone. You will also need **memory** to use it.
+Note this module isn't standalone. You will also need [memory](#memory) to use it.
 
 [Example code here](examples/list.c)
+
+### darray
+Provides a darray (dynamic-array) struct, a sort of a clone of C++'s std::vector and related functions.
+Note: this module isn't standalone. You will also need [memory](#memory) and [algorithms](#algorithms) to use it.
+
+[Example code here](examples/darray.c)
