@@ -87,6 +87,59 @@ void darrayPopBack(darray* darr)
     return;
 }
 
+void darrayInsertAt(darray* darr, size_t index, const void* data)
+{
+    if(darr == NULLPTR || darr->data == NULLPTR || darr->elementSize == 0 || index > darr->size || data == NULLPTR)
+        return;
+    
+    darrayInternalGrowth(darr);
+    
+    size_t i;
+
+    for(i = darr->size; i > index; --i)
+        ASSIGN((darr->data + i * darr->elementSize), (darr->data + (i - 1) * darr->elementSize), darr->elementSize);
+    
+    ASSIGN((darr->data + i * darr->elementSize), data, darr->elementSize);
+
+    ++(darr->size);
+
+    return;
+}
+
+void darrayInsertInOrder(darray* darr, const void* data, int (*compare)(const void*, const void*))
+{
+    if(darr == NULLPTR || darr->data == NULLPTR || darr->elementSize == 0 || data == NULLPTR || compare == NULLPTR)
+        return;
+    
+    darrayInternalGrowth(darr);
+    
+    size_t i;
+
+    for(i = darr->size; i > 0 && compare((darr->data + (i - 1) * darr->elementSize), data) > 0; --i)
+        ASSIGN((darr->data + i * darr->elementSize), (darr->data + (i - 1) * darr->elementSize), darr->elementSize);
+    
+    ASSIGN((darr->data + i * darr->elementSize), data, darr->elementSize);
+
+    ++(darr->size);
+
+    return;
+}
+
+void darrayRemove(darray* darr, size_t index)
+{
+    if(darr == NULLPTR || darr->data == NULLPTR || darr->elementSize == 0 || index >= darr->size)
+        return;
+    
+    size_t i;
+
+    for(i = index; i < darr->size - 1; ++i)
+        ASSIGN((darr->data + i * darr->elementSize), (darr->data + (i + 1) * darr->elementSize), darr->elementSize);
+
+    --(darr->size);
+
+    return;
+}
+
 void darraySet(darray* darr, size_t index, const void* newData)
 {
     if(darr == NULLPTR || darr->data == NULLPTR || darr->elementSize == 0 || index >= darr->size)
@@ -113,4 +166,36 @@ void darraySort(darray* darr, int (*compare)(const void*, const void*), int orde
     sort(darr->data, darr->elementSize, darr->size, compare, order);
 
     return;
+}
+
+int darrayLSearch(darray* darr, const void* data, int (*compare)(const void*, const void*))
+{
+    if(darr == NULLPTR)
+        return NOT_FOUND;
+    
+    return lSearch(darr->data, darr->elementSize, darr->size, data, compare);
+}
+
+int darrayBSearch(darray* darr, const void* data, int (*compare)(const void*, const void*), int order)
+{
+    if(darr == NULLPTR)
+        return NOT_FOUND;
+    
+    return bSearch(darr->data, darr->elementSize, darr->size, data, compare, order);
+}
+
+size_t darrayLSearchOccurrences(darray* darr, const void* data, int (*compare)(const void*, const void*), size_t* occurrences, size_t occurrencesSize)
+{
+    if(darr == NULLPTR)
+        return 0;
+    
+    return lSearchOccurrences(darr->data, darr->elementSize, darr->size, data, compare, occurrences, occurrencesSize);
+}
+
+size_t darrayBSearchOccurrences(darray* darr, const void* data, int (*compare)(const void*, const void*), int order, size_t* occurrences, size_t occurrencesSize)
+{
+    if(darr == NULLPTR)
+        return 0;
+    
+    return bSearchOccurrences(darr->data, darr->elementSize, darr->size, data, compare, order, occurrences, occurrencesSize);
 }

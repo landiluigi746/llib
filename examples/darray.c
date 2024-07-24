@@ -68,7 +68,47 @@ int main(void)
     printf("The value at index 7 is %d\n", *(int*)darrayGet(darr, 7));
 
     //sort the darray
-    darraySort(darr, compareInts, ASCENDING);
+    darraySort(darr, &compareInts, ASCENDING);
+
+    //insert a value in order
+    int val3 = 3;
+    darrayInsertInOrder(darr, &val3, &compareInts);
+    printDarray(darr);
+
+    //remove some values
+    darrayRemove(darr, 3);
+    darrayRemove(darr, 7);
+    printDarray(darr);
+
+    //insert some values at specific index
+    int val4 = 4, val5 = 5;
+    darrayInsertAt(darr, 3, &val4);
+    darrayInsertAt(darr, 7, &val5);
+    printDarray(darr);
+
+    //resize the darray
+    darrayResize(darr, SIZE / 2);
+    printDarray(darr);
+
+    //search the darray (linear search)
+    int index = darrayLSearch(darr, &val1, &compareInts);
+    printf("Linear search: The value %d is at index %d\n", val1, index);
+
+    //search the darray (binary search, make sure the darray is sorted)
+    darraySort(darr, &compareInts, ASCENDING);
+    index = darrayBSearch(darr, &val1, &compareInts, ASCENDING);
+    printf("Binary search: The value %d is at index %d\n", val1, index);
+
+    //search the darray for occurrences
+    size_t occurrences[5];
+    size_t occurrencesSize = 5;
+    size_t occurrencesFound = darrayLSearchOccurrences(darr, &val1, &compareInts, occurrences, occurrencesSize);
+    printf("Linear search: The value %d was found %d times\n", val1, occurrencesFound);
+
+    //search the darray for occurrences
+    darraySort(darr, &compareInts, ASCENDING);
+    occurrencesFound = darrayBSearchOccurrences(darr, &val1, &compareInts, ASCENDING, occurrences, occurrencesSize);
+    printf("Binary search: The value %d was found %d times\n", val1, occurrencesFound);
 
     //delete the darray
     darrayDelete(darr);
