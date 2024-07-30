@@ -10,6 +10,7 @@ LLIB_SRC = src/llib/*.c
 LLIB_OBJ = ./*.o
 CFLAGS = $(LLIB_SRC) -std=c99 -Iinclude
 RM = rm -f
+LIB_DIR = lib
 OUT_DIR = out
 
 .PHONY: all examples llib run clean
@@ -28,9 +29,10 @@ examples:
 	make clean
 
 llib:
+	mkdir -p $(LIB_DIR)
 	$(CC) -c $(CFLAGS)
-	$(AR) rcs libllib.a $(LLIB_OBJ)
-	@echo "Done! llib compiled as a static library 'libllib.a'!"
+	$(AR) rcs $(LIB_DIR)/llib.a $(LLIB_OBJ)
+	@echo "Done! llib compiled as a static library 'llib.a'!"
 	make clean
 
 run:
