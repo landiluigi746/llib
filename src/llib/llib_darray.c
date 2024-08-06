@@ -3,12 +3,9 @@
 
 static void darrayInternalGrowth(darray* darr)
 {
-    if(darr->data == NULLPTR)
-        darr->data = allocate(darr->elementSize);
-    
     if(darr->size >= darr->capacity)
     {
-        darr->capacity *= 2;
+        darr->capacity = (darr->capacity == 0) ? 1 : darr->capacity * 2;
         darr->data = reallocate(darr->data, darr->capacity * darr->elementSize);
     }
 

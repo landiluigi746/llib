@@ -36,8 +36,10 @@ int compareInts(const void* A, const void* B)
 int main(void)
 {
     //create a darray (use the macro for simplicity)
-    darray* darr = DARRAY(int, SIZE);
+    darray* darr = DARRAY(int, 0);
     int i;
+
+    printDarray(darr);
 
     //add some values
     //the darray will grow automatically
