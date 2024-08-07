@@ -1,10 +1,7 @@
-project "PDCurses"
+project "llib"
     kind "StaticLib"
     language "C"
     cdialect "C99"
-
-    targetdir("../bin/" .. outputdir .. "/%{prj.name}")
-    objdir("../bin-int/" .. outputdir .. "/%{prj.name}")
 
     configurations {
         "Debug",
@@ -23,8 +20,7 @@ project "PDCurses"
 
     vpaths {
         ["Header Files"] = "Source/**.h",
-        ["Source Files/*"] = "Source/**.c",
-        ["Resource Files"] = "Source/pdcurses.rc"
+        ["Source Files/*"] = "Source/**.c"
     }
 
     filter { "configurations:Debug" }
