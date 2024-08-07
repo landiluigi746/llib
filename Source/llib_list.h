@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <llib/llib_memory.h>
+#include <llib_memory.h>
 
 /**
  * llib defines

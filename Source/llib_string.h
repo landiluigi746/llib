@@ -13,8 +13,8 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
-#include <llib/llib_io.h>
-#include <llib/llib_memory.h>
+#include <llib_io.h>
+#include <llib_memory.h>
 
 /**
  * llib defines

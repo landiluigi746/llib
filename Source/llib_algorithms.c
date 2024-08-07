@@ -6,7 +6,7 @@
  * Github: https://github.com/landiluigi746
  */
 
-#include <llib/llib_algorithms.h>
+#include <llib_algorithms.h>
 
 //macro to simplify comparisons based on order
 #define CMP_RESULT(a, b) ((order == ASCENDING) ? compare(a, b) : compare(b, a))

@@ -6,7 +6,7 @@
  * Github: https://github.com/landiluigi746
  */
 
-#include <llib/llib_string.h>
+#include <llib_string.h>
 
 size_t ll_strlen(const char* str)
 {

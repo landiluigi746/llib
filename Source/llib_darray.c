@@ -1,5 +1,5 @@
-#include <llib/llib_darray.h>
-#include <llib/llib_algorithms.h>
+#include <llib_darray.h>
+#include <llib_algorithms.h>
 
 static void darrayInternalGrowth(darray* darr)
 {

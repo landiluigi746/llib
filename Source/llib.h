@@ -13,13 +13,13 @@
 extern "C" {
 #endif
 
-#include <llib/llib_memory.h>
-#include <llib/llib_algorithms.h>
-#include <llib/llib_io.h>
-#include <llib/llib_string.h>
-#include <llib/llib_utils.h>
-#include <llib/llib_list.h>
-#include <llib/llib_darray.h>
+#include <llib_memory.h>
+#include <llib_algorithms.h>
+#include <llib_io.h>
+#include <llib_string.h>
+#include <llib_utils.h>
+#include <llib_list.h>
+#include <llib_darray.h>
 
 #ifdef __cplusplus
 }
