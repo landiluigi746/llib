@@ -43,7 +43,7 @@ extern "C" {
  * Not meant to be used directly, use the related functions
  */
 typedef struct {
-    void* data;
+    byte* data;
     size_t elementSize;
     size_t size;
     size_t capacity;
