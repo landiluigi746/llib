@@ -13,6 +13,8 @@ Every module header is fully commented and can be used as a reference.
 
 Inspired by https://github.com/barrust/c-utils and https://github.com/goToMain/c-utils/.
 
+**Note**: If you want need the premake5 project, you can find it [here](https://github.com/landiluigi746/llib/tree/premake_prj)
+
 ## 📥 Installation 📤
 
 To use the "llib" library, you have two alternatives:
